@@ -20,21 +20,6 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.btn-viajes {
-    background-color: #4e73df;
-    border-color: #4e73df;
-}
-
-.btn-vehiculos {
-    background-color: #1cc88a;
-    border-color: #1cc88a;
-}
-
-.btn-gastos {
-    background-color: #f6c23e;
-    border-color: #f6c23e;
-}
-
 .card {
     border-radius: 15px;
     overflow: hidden;
