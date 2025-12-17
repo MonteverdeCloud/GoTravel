@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Redireccionando...</title>
+    <script>
+        const phoneNumber = "50660471105";
+
+        // Mensajes según idioma
+        const message = "Hola, se encuentra disponible?";
+
+        // Crear URL de WhatsApp
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+        window.location.href = whatsappUrl;
+    </script>
+</head>
+
+<body>
+    Si no eres redirigido automáticamente, <a href="./index.html">haz clic aquí</a>.
+</body>
+
+</html>

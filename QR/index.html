@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoTravel ML</title>
+    <link rel="icon" href="../img/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(22, 22, 22, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #ff9500, #ff5e3a);
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            box-shadow: 0 8px 20px rgba(255, 94, 58, 0.3);
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .welcome-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ff9500, #ff5e3a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            transition: opacity 0.5s ease-in-out;
+            line-height: 1.3;
+        }
+
+        .welcome-text.fade-out {
+            opacity: 0;
+        }
+
+        .welcome-text.fade-in {
+            opacity: 1;
+        }
+
+        .controls-container {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .language-selector {
+            margin-bottom: 25px;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #aaa;
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            background-color: #1c1c1e;
+            border: 1px solid #3a3a3c;
+            color: white;
+            font-size: 1.1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dropdown:hover,
+        .dropdown:focus {
+            border-color: #ff9500;
+            outline: none;
+        }
+
+        /* Botón de WhatsApp */
+        .whatsapp-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .whatsapp-button:hover {
+            background: linear-gradient(135deg, #1DA851, #0E7A6F);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-button:active {
+            transform: translateY(0);
+        }
+
+        .whatsapp-icon {
+            font-size: 1.4rem;
+        }
+
+        .language-flag {
+            display: inline-block;
+            width: 24px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Efectos de animación para el logo */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .logo {
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            .logo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .welcome-text {
+                font-size: 1.6rem;
+                min-height: 70px;
+            }
+
+            .controls-container {
+                max-width: 350px;
+            }
+
+            .whatsapp-button {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 12px;
+                border: none;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .welcome-text {
+                font-size: 1.4rem;
+                min-height: 60px;
+            }
+
+            .dropdown,
+            .whatsapp-button {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="../img/logo.svg" alt="Logo" />
+            </div>
+        </div>
+
+        <div class="welcome-text" id="welcome-text">
+            ¡Bienvenido!
+        </div>
+
+        <div class="controls-container">
+            <div class="language-selector">
+                <label for="language-select">IDIOMA / LANGUAGE</label>
+                <select id="language-select" class="dropdown">
+                    <option value="es">
+                        <span class="language-flag">🇪🇸</span> Español
+                    </option>
+                    <option value="en">
+                        <span class="language-flag">🇺🇸</span> English
+                    </option>
+                </select>
+            </div>
+
+            <button class="whatsapp-button" id="whatsapp-button">
+                <i class="fab fa-whatsapp whatsapp-icon"></i>
+                <span id="whatsapp-text">ESCRÍBENOS</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Textos en diferentes idiomas
+        const welcomeTexts = {
+            es: [
+                "¿Necesitas un taxi?",
+                "¿Necesitas comprar pero no quieres salir?",
+                "Taxi y compras a domicilio",
+                "Rápido, seguro y confiable",
+                "Tu viaje, nuestra prioridad",
+                "Pide tu taxi en segundos",
+                "Entrega de compras a tu puerta",
+                "La mejor opción en transporte",
+                "Cubre todas tus necesidades",
+                "Desde un viaje hasta tus compras",
+                "Monteverde a tu alcance",
+                "Innovación en movilidad",
+                "Más que un taxi, un servicio integral"
+            ],
+            en: [
+                "Need a taxi?",
+                "Need to shop but don't want to go out?",
+                "Taxi and home shopping delivery",
+                "Fast, safe and reliable",
+                "Your journey, our priority",
+                "Order your taxi in seconds",
+                "Shopping delivery to your door",
+                "The best transportation option",
+                "Cover all your needs",
+                "From a ride to your shopping",
+                "The city at your fingertips",
+                "Innovation in mobility",
+                "More than a taxi, a comprehensive service"
+            ]
+        };
+
+        // Estado actual del idioma
+        let currentLanguage = 'es';
+        let textIndex = 0;
+        let textInterval;
+
+        // Elementos DOM
+        const welcomeTextElement = document.getElementById('welcome-text');
+        const languageSelect = document.getElementById('language-select');
+        const whatsappButton = document.getElementById('whatsapp-button');
+        const whatsappText = document.getElementById('whatsapp-text');
+
+        // Función para cambiar el texto con animación
+        function changeWelcomeText() {
+            const texts = welcomeTexts[currentLanguage];
+
+            welcomeTextElement.classList.remove('fade-in');
+            welcomeTextElement.classList.add('fade-out');
+
+            setTimeout(() => {
+                textIndex = (textIndex + 1) % texts.length;
+                welcomeTextElement.textContent = texts[textIndex];
+                welcomeTextElement.classList.remove('fade-out');
+                welcomeTextElement.classList.add('fade-in');
+            }, 500);
+        }
+
+        // Iniciar el cambio automático de textos
+        function startTextRotation() {
+            if (textInterval) {
+                clearInterval(textInterval);
+            }
+            textInterval = setInterval(changeWelcomeText, 3000);
+        }
+
+        // Cambiar idioma cuando se selecciona una opción
+        languageSelect.addEventListener('change', function () {
+            currentLanguage = this.value;
+
+            // Actualizar el texto de bienvenida
+            const texts = welcomeTexts[currentLanguage];
+            welcomeTextElement.textContent = texts[textIndex % texts.length];
+
+            // Cambiar texto del botón según idioma
+            if (currentLanguage === 'en') {
+                whatsappText.textContent = 'MESSAGE US';
+            } else {
+                whatsappText.textContent = 'ESCRÍBENOS';
+            }
+
+            // Reiniciar la rotación de textos
+            startTextRotation();
+        });
+
+        // Acción para el botón de WhatsApp
+        whatsappButton.addEventListener('click', function () {
+            // Cambia este número por el número de WhatsApp real
+            const phoneNumber = "50660471105";
+
+            // Mensajes según idioma
+            const message = currentLanguage === 'es'
+                ? "¡Hola! Me gustaría obtener más información sobre GoTravel ML"
+                : "Hello! I would like to get more information about GoTravel ML";
+
+            // Crear URL de WhatsApp
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+            // Abrir WhatsApp en nueva pestaña
+            window.open(whatsappUrl, '_blank');
+        });
+
+        // Inicializar la rotación de textos
+        startTextRotation();
+
+        // Cambiar texto inmediatamente después de cargar la página
+        setTimeout(() => {
+            textIndex = 1;
+            changeWelcomeText();
+        }, 1000);
+    </script>
+</body>
+
+</html>
