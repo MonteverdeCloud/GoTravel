@@ -76,7 +76,7 @@
             background: linear-gradient(135deg, #ff9500, #ff5e3a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             min-height: 80px;
             display: flex;
             align-items: center;
@@ -94,10 +94,62 @@
             opacity: 1;
         }
 
+        /* Nuevos estilos para los iconos de servicios */
+        .services-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 25px 0;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            min-width: 100px;
+            transition: transform 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ff9500, #ff5e3a);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 94, 58, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover .service-icon {
+            background: linear-gradient(135deg, #ff5e3a, #ff9500);
+            box-shadow: 0 8px 20px rgba(255, 94, 58, 0.4);
+        }
+
+        .service-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #ddd;
+            text-align: center;
+            line-height: 1.3;
+        }
+
         .controls-container {
             width: 100%;
             max-width: 400px;
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 20px;
         }
 
@@ -107,7 +159,7 @@
 
         .language-selector label {
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 5px;
             font-size: 1.1rem;
             color: #aaa;
             text-align: left;
@@ -211,6 +263,24 @@
             .welcome-text {
                 font-size: 1.6rem;
                 min-height: 70px;
+                margin-bottom: 15px;
+            }
+
+            .services-container {
+                gap: 20px;
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .service-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.6rem;
+                border-radius: 15px;
+            }
+
+            .service-name {
+                font-size: 0.9rem;
             }
 
             .controls-container {
@@ -241,11 +311,54 @@
             .welcome-text {
                 font-size: 1.4rem;
                 min-height: 60px;
+                margin-bottom: 10px;
+            }
+
+            .services-container {
+                gap: 15px;
+                padding: 10px;
+                margin: 15px 0;
+            }
+
+            .service-item {
+                min-width: 80px;
+                gap: 8px;
+            }
+
+            .service-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+                border-radius: 12px;
+            }
+
+            .service-name {
+                font-size: 0.8rem;
             }
 
             .dropdown,
             .whatsapp-button {
                 padding: 15px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .services-container {
+                gap: 12px;
+            }
+
+            .service-item {
+                min-width: 70px;
+            }
+
+            .service-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .service-name {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -257,10 +370,6 @@
             <div class="logo">
                 <img src="../img/logo.svg" alt="Logo" />
             </div>
-        </div>
-
-        <div class="welcome-text" id="welcome-text">
-            ¡Bienvenido!
         </div>
 
         <div class="controls-container">
@@ -275,6 +384,40 @@
                     </option>
                 </select>
             </div>
+
+            <div class="welcome-text" id="welcome-text">
+                ¡Bienvenido!
+            </div>
+
+            <!-- Servicios -->
+            <div class="services-container" id="services-container">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-taxi"></i>
+                    </div>
+                    <div class="service-name" id="service-taxi">Servicio de Taxi</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-basket"></i>
+                    </div>
+                    <div class="service-name" id="service-shopping">Compras a Domicilio</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <div class="service-name" id="service-tours">Mandados</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="service-name" id="service-airport">Transporte Aeropuerto</div>
+                </div>
+            </div>
+
+            <!-- / Servicios -->
 
             <button class="whatsapp-button" id="whatsapp-button">
                 <i class="fab fa-whatsapp whatsapp-icon"></i>
@@ -318,6 +461,22 @@
             ]
         };
 
+        // Textos de servicios en diferentes idiomas
+        const serviceTexts = {
+            es: {
+                taxi: "Servicio de Taxi",
+                shopping: "Compras a Domicilio",
+                tours: "Tours Turísticos",
+                airport: "Transporte Aeropuerto"
+            },
+            en: {
+                taxi: "Taxi Service",
+                shopping: "Home Shopping",
+                tours: "Tourist Tours",
+                airport: "Airport Transportation"
+            }
+        };
+
         // Estado actual del idioma
         let currentLanguage = 'es';
         let textIndex = 0;
@@ -328,6 +487,22 @@
         const languageSelect = document.getElementById('language-select');
         const whatsappButton = document.getElementById('whatsapp-button');
         const whatsappText = document.getElementById('whatsapp-text');
+        const servicesContainer = document.getElementById('services-container');
+
+        // Elementos de nombres de servicios
+        const serviceTaxi = document.getElementById('service-taxi');
+        const serviceShopping = document.getElementById('service-shopping');
+        const serviceTours = document.getElementById('service-tours');
+        const serviceAirport = document.getElementById('service-airport');
+
+        // Función para actualizar textos de servicios
+        function updateServiceTexts() {
+            const texts = serviceTexts[currentLanguage];
+            serviceTaxi.textContent = texts.taxi;
+            serviceShopping.textContent = texts.shopping;
+            serviceTours.textContent = texts.tours;
+            serviceAirport.textContent = texts.airport;
+        }
 
         // Función para cambiar el texto con animación
         function changeWelcomeText() {
@@ -360,6 +535,9 @@
             const texts = welcomeTexts[currentLanguage];
             welcomeTextElement.textContent = texts[textIndex % texts.length];
 
+            // Actualizar textos de servicios
+            updateServiceTexts();
+
             // Cambiar texto del botón según idioma
             if (currentLanguage === 'en') {
                 whatsappText.textContent = 'MESSAGE US';
@@ -390,6 +568,9 @@
 
         // Inicializar la rotación de textos
         startTextRotation();
+
+        // Actualizar textos de servicios al cargar
+        updateServiceTexts();
 
         // Cambiar texto inmediatamente después de cargar la página
         setTimeout(() => {
