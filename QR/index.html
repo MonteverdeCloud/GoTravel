@@ -94,16 +94,17 @@
             opacity: 1;
         }
 
-        /* Nuevos estilos para los iconos de servicios */
+        /* Estilos para los servicios - CORREGIDO */
         .services-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             margin: 25px 0;
             padding: 20px;
             width: 100%;
             max-width: 500px;
+            justify-content: center;
+            justify-items: center;
         }
 
         .service-item {
@@ -111,8 +112,10 @@
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            min-width: 100px;
+            width: 100%;
+            max-width: 110px;
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
         .service-item:hover {
@@ -131,6 +134,7 @@
             color: white;
             box-shadow: 0 5px 15px rgba(255, 94, 58, 0.3);
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .service-item:hover .service-icon {
@@ -144,6 +148,10 @@
             color: #ddd;
             text-align: center;
             line-height: 1.3;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
         }
 
         .controls-container {
@@ -267,9 +275,14 @@
             }
 
             .services-container {
+                grid-template-columns: repeat(3, 1fr);
                 gap: 20px;
                 padding: 15px;
                 margin: 20px 0;
+            }
+
+            .service-item {
+                max-width: 100px;
             }
 
             .service-icon {
@@ -280,7 +293,7 @@
             }
 
             .service-name {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
             }
 
             .controls-container {
@@ -289,6 +302,29 @@
 
             .whatsapp-button {
                 padding: 16px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .services-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .service-item {
+                max-width: 90px;
+                gap: 8px;
+            }
+
+            .service-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+
+            .service-name {
+                font-size: 0.8rem;
             }
         }
 
@@ -315,14 +351,15 @@
             }
 
             .services-container {
-                gap: 15px;
-                padding: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                padding: 8px;
                 margin: 15px 0;
             }
 
             .service-item {
-                min-width: 80px;
-                gap: 8px;
+                max-width: 85px;
+                gap: 6px;
             }
 
             .service-icon {
@@ -333,7 +370,7 @@
             }
 
             .service-name {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
 
             .dropdown,
@@ -344,11 +381,11 @@
 
         @media (max-width: 380px) {
             .services-container {
-                gap: 12px;
+                gap: 10px;
             }
 
             .service-item {
-                min-width: 70px;
+                max-width: 80px;
             }
 
             .service-icon {
@@ -358,7 +395,7 @@
             }
 
             .service-name {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -391,11 +428,19 @@
 
             <!-- Servicios -->
             <div class="services-container" id="services-container">
+
+                <!-- Fila 1 -->
                 <div class="service-item">
                     <div class="service-icon">
                         <i class="fas fa-taxi"></i>
                     </div>
-                    <div class="service-name" id="service-taxi">Servicio de Taxi</div>
+                    <div class="service-name" id="service-taxi">Servicio Taxi</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <div class="service-name" id="service-errands">Mandados</div>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">
@@ -403,20 +448,27 @@
                     </div>
                     <div class="service-name" id="service-shopping">Compras a Domicilio</div>
                 </div>
+
+                <!-- Fila 2 -->
                 <div class="service-item">
                     <div class="service-icon">
-                        <i class="fas fa-hotel"></i>
+                        <i class="fas fa-utensils"></i>
                     </div>
-                    <div class="service-name" id="service-tours">Mandados</div>
+                    <div class="service-name" id="service-food">Comida Express</div>
                 </div>
                 <div class="service-item">
                     <div class="service-icon">
-                        <i class="fas fa-plane"></i>
+                        <i class="fas fa-info-circle"></i>
                     </div>
-                    <div class="service-name" id="service-airport">Transporte Aeropuerto</div>
+                    <div class="service-name" id="service-info">Información</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div class="service-name" id="service-monteverde">Zona de Monteverde</div>
                 </div>
             </div>
-
             <!-- / Servicios -->
 
             <button class="whatsapp-button" id="whatsapp-button">
@@ -455,25 +507,29 @@
                 "The best transportation option",
                 "Cover all your needs",
                 "From a ride to your shopping",
-                "The city at your fingertips",
+                "Monteverde at your fingertips",
                 "Innovation in mobility",
                 "More than a taxi, a comprehensive service"
             ]
         };
 
-        // Textos de servicios en diferentes idiomas
+        // Textos de servicios en diferentes idiomas - ACTUALIZADO
         const serviceTexts = {
             es: {
-                taxi: "Servicio de Taxi",
+                taxi: "Servicio Taxi",
+                errands: "Mandados",
                 shopping: "Compras a Domicilio",
-                tours: "Tours Turísticos",
-                airport: "Transporte Aeropuerto"
+                food: "Comida Express",
+                info: "Información",
+                monteverde: "Zona de Monteverde"
             },
             en: {
                 taxi: "Taxi Service",
+                errands: "Errands",
                 shopping: "Home Shopping",
-                tours: "Tourist Tours",
-                airport: "Airport Transportation"
+                food: "Food Express",
+                info: "Information",
+                monteverde: "Monteverde Area"
             }
         };
 
@@ -487,21 +543,24 @@
         const languageSelect = document.getElementById('language-select');
         const whatsappButton = document.getElementById('whatsapp-button');
         const whatsappText = document.getElementById('whatsapp-text');
-        const servicesContainer = document.getElementById('services-container');
 
-        // Elementos de nombres de servicios
+        // Elementos de nombres de servicios - ACTUALIZADO
         const serviceTaxi = document.getElementById('service-taxi');
+        const serviceErrands = document.getElementById('service-errands');
         const serviceShopping = document.getElementById('service-shopping');
-        const serviceTours = document.getElementById('service-tours');
-        const serviceAirport = document.getElementById('service-airport');
+        const serviceFood = document.getElementById('service-food');
+        const serviceInfo = document.getElementById('service-info');
+        const serviceMonteverde = document.getElementById('service-monteverde');
 
-        // Función para actualizar textos de servicios
+        // Función para actualizar textos de servicios - ACTUALIZADA
         function updateServiceTexts() {
             const texts = serviceTexts[currentLanguage];
             serviceTaxi.textContent = texts.taxi;
+            serviceErrands.textContent = texts.errands;
             serviceShopping.textContent = texts.shopping;
-            serviceTours.textContent = texts.tours;
-            serviceAirport.textContent = texts.airport;
+            serviceFood.textContent = texts.food;
+            serviceInfo.textContent = texts.info;
+            serviceMonteverde.textContent = texts.monteverde;
         }
 
         // Función para cambiar el texto con animación
