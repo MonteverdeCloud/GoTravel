@@ -523,7 +523,8 @@
                     debugInfo.innerHTML += `<br>Abriendo WhatsApp...`;
 
                     // Abrir WhatsApp en nueva pestaña
-                    window.open(redirectTarget, '_blank');
+                    //window.open(redirectTarget, '_blank');
+                    window.open(redirectTarget, '_blank', 'noopener,noreferrer');
 
                     // Actualizar interfaz después de abrir WhatsApp
                     setTimeout(() => {
