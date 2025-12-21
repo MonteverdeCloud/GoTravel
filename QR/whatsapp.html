@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirección a WhatsApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -32,8 +34,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
@@ -57,14 +66,22 @@
         .whatsapp-icon {
             font-size: 70px;
             margin-bottom: 15px;
-            color: white;
+            display: block;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .header h1 {
@@ -87,8 +104,20 @@
             background-color: #f8f9fa;
             border-radius: 15px;
             padding: 25px;
+            margin-bottom: 20px;
             border-left: 5px solid #25D366;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .status-card.error {
+            border-left-color: #dc3545;
+            background-color: #ffe6e6;
+        }
+
+        .status-card.redirect {
+            border-left-color: #6f42c1;
+            background-color: #f3e8ff;
         }
 
         .status-card h2 {
@@ -99,6 +128,14 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+
+        .status-card.error h2 {
+            color: #dc3545;
+        }
+
+        .status-card.redirect h2 {
+            color: #6f42c1;
         }
 
         .phone-display {
@@ -114,6 +151,28 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+
+        .status-card.error .phone-display {
+            border-color: #dc3545;
+            background-color: #fff5f5;
+        }
+
+        .status-card.redirect .phone-display {
+            border-color: #6f42c1;
+            background-color: #f8f9ff;
+        }
+
+        .phone-display i {
+            color: #25D366;
+        }
+
+        .status-card.error .phone-display i {
+            color: #dc3545;
+        }
+
+        .status-card.redirect .phone-display i {
+            color: #6f42c1;
         }
 
         .message-preview {
@@ -150,6 +209,65 @@
             color: #25D366;
             margin: 25px 0;
             text-align: center;
+            animation: countdownPulse 1s infinite;
+        }
+
+        @keyframes countdownPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .status-card.error .countdown {
+            color: #dc3545;
+            animation: countdownPulseError 1s infinite;
+        }
+
+        @keyframes countdownPulseError {
+            0% {
+                transform: scale(1);
+                color: #dc3545;
+            }
+
+            50% {
+                transform: scale(1.1);
+                color: #bd2130;
+            }
+
+            100% {
+                transform: scale(1);
+                color: #dc3545;
+            }
+        }
+
+        .status-card.redirect .countdown {
+            color: #6f42c1;
+            animation: countdownPulseRedirect 1s infinite;
+        }
+
+        @keyframes countdownPulseRedirect {
+            0% {
+                transform: scale(1);
+                color: #6f42c1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                color: #5a32a3;
+            }
+
+            100% {
+                transform: scale(1);
+                color: #6f42c1;
+            }
         }
 
         .progress-bar {
@@ -168,17 +286,33 @@
             transition: width 1s linear;
         }
 
-        .error-message {
-            background-color: #ffe6e6;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            border-left: 4px solid #dc3545;
+        .status-card.error .progress-fill {
+            background: linear-gradient(to right, #dc3545, #bd2130);
         }
 
-        .error-message h3 {
-            color: #dc3545;
-            margin-bottom: 10px;
+        .status-card.redirect .progress-fill {
+            background: linear-gradient(to right, #6f42c1, #5a32a3);
+        }
+
+        .redirect-info {
+            background-color: #f3e8ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #6f42c1;
+            text-align: left;
+        }
+
+        .redirect-info p {
+            color: #6f42c1;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .redirect-info i {
+            font-size: 18px;
         }
 
         .debug-info {
@@ -189,223 +323,258 @@
             font-size: 12px;
             color: #0d6efd;
             text-align: left;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .whatsapp-icon {
+                font-size: 60px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .phone-display {
+                font-size: 20px;
+                padding: 12px;
+            }
+
+            .countdown {
+                font-size: 40px;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
-            <div class="whatsapp-icon">💬</div>
+            <i class="fab fa-whatsapp whatsapp-icon"></i>
             <h1>Redirección a WhatsApp</h1>
             <p>Serás dirigido automáticamente</p>
         </div>
-        
+
         <div class="content">
             <div class="status-card" id="statusCard">
-                <h2 id="statusTitle">⌛ Procesando solicitud</h2>
-                
+                <h2><i class="fas fa-sync-alt fa-spin"></i> Procesando solicitud</h2>
+
                 <div id="phoneDisplay" class="phone-display">
-                    <span>📱</span>
+                    <i class="fas fa-phone-alt"></i>
                     <span id="phoneNumber">Analizando URL...</span>
                 </div>
-                
-                <div id="messagePreview" class="message-preview">
+
+                <div id="messagePreview" class="message-preview" style="display: none;">
                     <p><strong>Mensaje:</strong> Hola, se encuentra disponible?</p>
                 </div>
-                
+
+                <div id="redirectInfo" class="redirect-info" style="display: none;">
+                    <p><i class="fas fa-external-link-alt"></i> Redirigiendo a:
+                        gotravel.monteverdecloud.com/QR/index.html</p>
+                </div>
+
                 <div class="progress-bar">
                     <div id="progressFill" class="progress-fill"></div>
                 </div>
-                
+
                 <div class="countdown" id="countdown">3</div>
-                
-                <p id="statusMessage">Redireccionando en <span id="seconds">3</span> segundos...</p>
-                
+
+                <p id="statusMessage">La ventana se abrirá en una nueva pestaña</p>
+
+                <!-- Información de depuración -->
                 <div id="debugInfo" class="debug-info"></div>
-                
-                <div id="errorMessage" class="error-message" style="display: none;">
-                    <h3>⚠️ Error detectado</h3>
-                    <p id="errorText"></p>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuración
+        // URL de redirección cuando no hay número
         const REDIRECT_URL = "https://gotravel.monteverdecloud.com/QR/index.html";
+
+        // Tiempo de cuenta regresiva (3 segundos)
         const COUNTDOWN_TIME = 3;
-        
-        // Elementos DOM
-        const elements = {
-            statusCard: document.getElementById('statusCard'),
-            statusTitle: document.getElementById('statusTitle'),
-            phoneNumber: document.getElementById('phoneNumber'),
-            phoneDisplay: document.getElementById('phoneDisplay'),
-            messagePreview: document.getElementById('messagePreview'),
-            countdown: document.getElementById('countdown'),
-            progressFill: document.getElementById('progressFill'),
-            statusMessage: document.getElementById('statusMessage'),
-            seconds: document.getElementById('seconds'),
-            debugInfo: document.getElementById('debugInfo'),
-            errorMessage: document.getElementById('errorMessage'),
-            errorText: document.getElementById('errorText')
-        };
-        
-        // Inicializar
-        init();
-        
-        function init() {
-            // Mostrar información de depuración
-            showDebugInfo();
-            
-            // Obtener número de teléfono de la URL
-            const phone = getPhoneFromURL();
-            
-            if (phone) {
-                // Si hay número, preparar WhatsApp
-                setupWhatsAppRedirect(phone);
-            } else {
-                // Si no hay número, redirigir a URL alternativa
-                setupAlternativeRedirect();
-            }
-        }
-        
-        function getPhoneFromURL() {
-            // Obtener parámetros de la URL
+
+        // Función para obtener parámetros de la URL
+        function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
-            let phone = urlParams.get('telefono') || 
-                       urlParams.get('phone') || 
-                       urlParams.get('numero');
-            
-            elements.debugInfo.innerHTML += `Parámetro bruto: "${phone}"<br>`;
-            
-            if (!phone) {
-                elements.debugInfo.innerHTML += `No se encontró parámetro de teléfono<br>`;
-                return null;
-            }
-            
-            // Limpiar el número (solo dígitos)
-            phone = phone.replace(/\D/g, '');
-            
-            // Validar que tenga al menos 8 dígitos
-            if (phone.length < 8) {
-                elements.debugInfo.innerHTML += `Número inválido (muy corto): ${phone}<br>`;
-                showError(`Número de teléfono inválido: ${phone}`);
-                return null;
-            }
-            
-            elements.debugInfo.innerHTML += `Número limpio: ${phone}<br>`;
-            elements.debugInfo.innerHTML += `Longitud: ${phone.length} dígitos<br>`;
-            
-            return phone;
+            return urlParams.get(param);
         }
-        
-        function setupWhatsAppRedirect(phone) {
-            // Mostrar número formateado
-            elements.phoneNumber.textContent = formatPhone(phone);
-            
-            // Crear URL de WhatsApp
-            const message = encodeURIComponent("Hola, se encuentra disponible?");
-            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-            
-            elements.debugInfo.innerHTML += `URL WhatsApp: ${whatsappUrl}<br>`;
-            
-            // Configurar cuenta regresiva
-            let countdown = COUNTDOWN_TIME;
-            const interval = setInterval(() => {
-                countdown--;
-                elements.countdown.textContent = countdown;
-                elements.seconds.textContent = countdown;
-                
-                // Actualizar barra de progreso
-                const progress = 100 - (countdown * (100 / COUNTDOWN_TIME));
-                elements.progressFill.style.width = `${progress}%`;
-                
-                // Cuando termine
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    elements.countdown.textContent = "✓";
-                    elements.statusTitle.textContent = "✅ Abriendo WhatsApp...";
-                    elements.statusMessage.textContent = "Redireccionando a WhatsApp...";
-                    
+
+        // Obtener el número de teléfono de la URL
+        const phoneNumber = getQueryParam('telefono') || getQueryParam('phone') || getQueryParam('numero');
+
+        // Elementos del DOM
+        const statusCard = document.getElementById('statusCard');
+        const phoneDisplay = document.getElementById('phoneNumber');
+        const countdownElement = document.getElementById('countdown');
+        const progressFill = document.getElementById('progressFill');
+        const messagePreview = document.getElementById('messagePreview');
+        const redirectInfo = document.getElementById('redirectInfo');
+        const statusMessage = document.getElementById('statusMessage');
+        const debugInfo = document.getElementById('debugInfo');
+
+        // Mostrar información de depuración (opcional)
+        debugInfo.innerHTML = `Parámetro detectado: ${phoneNumber || 'NINGUNO'}`;
+        debugInfo.style.display = 'block';
+
+        let countdown = COUNTDOWN_TIME;
+        let redirectTarget = '';
+        let isWhatsApp = false;
+
+        if (phoneNumber) {
+            // CASO 1: Hay número de teléfono - Redirigir a WhatsApp
+            isWhatsApp = true;
+
+            // Limpiar el número (eliminar todo excepto dígitos)
+            const cleanPhone = phoneNumber.replace(/\D/g, '');
+
+            // Mostrar información de depuración
+            debugInfo.innerHTML += `<br>Número limpio: ${cleanPhone}`;
+            debugInfo.innerHTML += `<br>Longitud: ${cleanPhone.length} dígitos`;
+
+            // Validar que el número tenga al menos 8 dígitos
+            if (cleanPhone.length < 8) {
+                debugInfo.innerHTML += `<br>ERROR: Número muy corto`;
+                // Si el número es muy corto, tratar como error
+                isWhatsApp = false;
+            }
+
+            if (isWhatsApp) {
+                // Mostrar el número en pantalla (formateado de manera simple)
+                phoneDisplay.textContent = formatPhoneNumberSimple(cleanPhone);
+
+                // Mostrar vista previa del mensaje
+                messagePreview.style.display = 'block';
+
+                // Codificar mensaje y crear URL de WhatsApp
+                const message = encodeURIComponent("Hola, se encuentra disponible?");
+                redirectTarget = `https://wa.me/${cleanPhone}?text=${message}`;
+
+                // Mostrar URL en depuración
+                debugInfo.innerHTML += `<br>URL WhatsApp: ${redirectTarget}`;
+
+                // Actualizar mensaje de estado
+                statusMessage.textContent = "WhatsApp se abrirá en una nueva pestaña";
+            } else {
+                // Si el número no es válido, redirigir a URL alternativa
+                redirectTarget = REDIRECT_URL;
+                statusMessage.textContent = "Número inválido. Redirigiendo...";
+            }
+
+        } else {
+            // CASO 2: No hay número - Redirigir a URL alternativa
+            isWhatsApp = false;
+            redirectTarget = REDIRECT_URL;
+        }
+
+        // Configurar interfaz según el tipo de redirección
+        if (isWhatsApp) {
+            // Configurar para WhatsApp
+            statusMessage.textContent = "WhatsApp se abrirá en una nueva pestaña";
+
+        } else {
+            // Configurar para redirección alternativa
+            statusCard.classList.add('error');
+            phoneDisplay.textContent = "Redirigiendo a página principal";
+
+            // Mostrar información de redirección
+            redirectInfo.style.display = 'block';
+
+            // Actualizar mensaje de estado
+            statusMessage.textContent = "Serás redirigido a la página principal";
+
+            // Cambiar icono y texto del encabezado
+            document.querySelector('.status-card h2').innerHTML = '<i class="fas fa-share-alt"></i> Redirigiendo a página principal';
+
+            // Cambiar clase a "redirect" después de un momento
+            setTimeout(() => {
+                statusCard.classList.remove('error');
+                statusCard.classList.add('redirect');
+            }, 500);
+        }
+
+        // Iniciar cuenta regresiva
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+
+            // Actualizar barra de progreso
+            const progressPercentage = 100 - (countdown * (100 / COUNTDOWN_TIME));
+            progressFill.style.width = `${progressPercentage}%`;
+
+            // Cuando llegue a 0, realizar la redirección
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+
+                if (isWhatsApp) {
+                    // Redirigir a WhatsApp en nueva pestaña
+                    countdownElement.textContent = "¡Listo!";
+                    debugInfo.innerHTML += `<br>Abriendo WhatsApp...`;
+
                     // Abrir WhatsApp en nueva pestaña
+                    window.open(redirectTarget, '_blank');
+
+                    // Actualizar interfaz después de abrir WhatsApp
                     setTimeout(() => {
-                        window.open(whatsappUrl, '_blank');
-                        elements.phoneNumber.innerHTML = '✅ WhatsApp abierto<br><small>Puedes cerrar esta ventana</small>';
+                        document.querySelector('.status-card h2').innerHTML = '<i class="fas fa-check-circle"></i> WhatsApp abierto';
+                        phoneDisplay.innerHTML = '<i class="fas fa-external-link-alt"></i> WhatsApp abierto en nueva pestaña';
+                        debugInfo.innerHTML += `<br>WhatsApp abierto exitosamente`;
                     }, 500);
-                }
-            }, 1000);
-        }
-        
-        function setupAlternativeRedirect() {
-            // Cambiar estilos para error
-            elements.statusCard.style.borderLeftColor = '#6f42c1';
-            elements.statusCard.style.backgroundColor = '#f3e8ff';
-            elements.phoneDisplay.style.borderColor = '#6f42c1';
-            elements.phoneDisplay.style.backgroundColor = '#f8f9ff';
-            elements.progressFill.style.background = 'linear-gradient(to right, #6f42c1, #5a32a3)';
-            elements.countdown.style.color = '#6f42c1';
-            
-            elements.statusTitle.textContent = "🔀 Redireccionando...";
-            elements.phoneNumber.textContent = "Página principal";
-            elements.statusMessage.textContent = `Redirigiendo a: ${REDIRECT_URL}`;
-            elements.messagePreview.style.display = 'none';
-            
-            // Configurar cuenta regresiva
-            let countdown = COUNTDOWN_TIME;
-            const interval = setInterval(() => {
-                countdown--;
-                elements.countdown.textContent = countdown;
-                elements.seconds.textContent = countdown;
-                
-                // Actualizar barra de progreso
-                const progress = 100 - (countdown * (100 / COUNTDOWN_TIME));
-                elements.progressFill.style.width = `${progress}%`;
-                
-                // Cuando termine
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    elements.countdown.textContent = "→";
-                    elements.statusTitle.textContent = "🔄 Redireccionando ahora...";
-                    
+
+                } else {
                     // Redirigir a URL alternativa en la misma pestaña
+                    countdownElement.textContent = "Redirigiendo...";
+                    debugInfo.innerHTML += `<br>Redirigiendo a: ${redirectTarget}`;
+
+                    // Esperar un momento para mostrar el mensaje final
                     setTimeout(() => {
-                        window.location.href = REDIRECT_URL;
-                    }, 500);
+                        window.location.href = redirectTarget;
+                    }, 800);
                 }
-            }, 1000);
-        }
-        
-        function formatPhone(phone) {
+            }
+        }, 1000);
+
+        // Función simplificada para formatear número de teléfono
+        function formatPhoneNumberSimple(phone) {
+            // Solo mantener dígitos
+            const digits = phone.replace(/\D/g, '');
+
             // Para números de Costa Rica (506 + 8 dígitos)
-            if (phone.startsWith('506') && phone.length === 11) {
-                return `+${phone.substring(0, 3)} ${phone.substring(3, 7)} ${phone.substring(7)}`;
+            if (digits.startsWith('506') && digits.length === 11) {
+                return `+${digits.substring(0, 3)} ${digits.substring(3, 7)} ${digits.substring(7)}`;
             }
-            
-            // Para números internacionales
-            if (phone.length > 10) {
-                return `+${phone}`;
+
+            // Para números internacionales generales
+            if (digits.length > 10) {
+                const countryCode = digits.substring(0, digits.length - 8);
+                const localNumber = digits.substring(digits.length - 8);
+                return `+${countryCode} ${localNumber.substring(0, 4)} ${localNumber.substring(4)}`;
             }
-            
+
             // Para números locales
-            return phone;
+            if (digits.length === 8) {
+                return `${digits.substring(0, 4)} ${digits.substring(4)}`;
+            }
+
+            // Para cualquier otro formato
+            return `+${digits}`;
         }
-        
-        function showDebugInfo() {
-            elements.debugInfo.innerHTML = `
-                URL completa: ${window.location.href}<br>
-                Parámetros: ${window.location.search}<br>
-                Ruta: ${window.location.pathname}<br>
-                <hr>
-                <small>Esta información es solo para depuración</small>
-            `;
-        }
-        
-        function showError(message) {
-            elements.errorText.textContent = message;
-            elements.errorMessage.style.display = 'block';
-        }
+
+        // Efecto de entrada para el contenedor
+        document.querySelector('.container').style.animation = 'fadeIn 0.8s ease-out';
     </script>
 </body>
+
 </html>
