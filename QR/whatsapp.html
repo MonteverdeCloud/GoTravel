@@ -269,11 +269,6 @@
             // Eliminar cualquier carácter no numérico excepto el signo +
             const cleaned = phone.replace(/[^\d\+]/g, '');
 
-            // Si no empieza con +, agregar el código de país por defecto (México)
-            if (!cleaned.startsWith('+')) {
-                return '+52' + cleaned;
-            }
-
             return cleaned;
         }
 
