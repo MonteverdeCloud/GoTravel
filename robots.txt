@@ -1,0 +1,17 @@
+
+# Robots rules for gotravel.monteverdecloud.com
+User-agent: *
+
+# Allow these public pages to be crawled and indexed
+Allow: /index.html
+Allow: /QR/index.html
+
+# Discourage crawlers from fetching these pages (will reduce visibility)
+# Note: Disallow prevents crawling but does not guarantee non-indexing if other
+# sites link to these URLs. To fully prevent indexing, add a <meta name="robots" content="noindex"> to the page or protect it behind auth.
+Disallow: /QR/whatsapp.html
+Disallow: /interno/
+
+# Sitemap (production) - used by search engines to discover pages
+Sitemap: https://gotravel.monteverdecloud.com/sitemap.xml
+
